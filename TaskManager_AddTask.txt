@@ -1,0 +1,206 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class TaskManager_AddTask
+    {
+        public static void AddTaskPractic(System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks)
+        {
+            string words = "+---+--------------------------+\n| 1 |   Добавить запись        |\n+---+--------------------------+\n";
+            while (true)
+            {
+                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                if (tasks.Count == 255)
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Red;
+                    System.Console.WriteLine("\nДальнейшее добавление данных невозможно, так как кол-во записей в коллекции не может превышать <255> строк!\n");
+                    System.Console.WriteLine("Вы не сможете дальше продолжать выполнять операцию <Добавление> !");
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("Нажмите для продолжения любую клавишу...");
+                    System.Console.ReadKey(); System.Console.Clear(); break;
+                }
+                System.Console.WriteLine(words);
+                System.Console.Write("Хотите добавить новую запись? (да/нет) ---> ");
+                string input = System.Console.ReadLine(); 
+                if (input.ToLower() == "нет")
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    int count = tasks.Count;
+                    System.Console.WriteLine("\n+-----------------------------------------+");
+                    System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                    System.Console.WriteLine($"Количество записей в списке задач: {count}");
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("+-----------------------------------------+");
+                    System.Console.WriteLine("Нажмите для продолжения любую клавишу...");
+                    System.Console.ReadKey(); System.Console.Clear(); break;
+                }
+                else if (input.ToLower() == "да")
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.Clear();
+                    ConsoleApplicationPractic2024.Task taskB = new Task();
+                    while (true)
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        try
+                        {
+                            System.Console.WriteLine(words);
+                            System.Console.Write("Введите номер задачи ---> ");
+                            taskB.number = byte.Parse(System.Console.ReadLine());
+                            if (taskB.number == 0)
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine("\n  Вы ввели число = 0!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                            ConsoleApplicationPractic2024.Task num = null;
+                            foreach (var item in tasks)
+                            {
+                                if (item.number == taskB.number)
+                                {
+                                    num = item; break;
+                                }
+                            }
+                            if (num != null)
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine($"\n  Была найдена запись с одинаковыми первичными ключами!\n\n  Номер = {num.number}, Задача = {num.task}, Пометка = {num.symbol}\n");
+                                System.Console.WriteLine("\n  Введите строку заново!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                System.Console.WriteLine("\n  Не была найдена запись с одинаковыми первичными ключами! Ввод прошел успешно!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); break;
+                            }
+                        }
+                        catch (System.FormatException){
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Неверный формат! Введите число заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); continue;
+                        }
+                        catch (System.OverflowException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Вы вышли за диапазон типа данных byte! Введите число заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); continue;
+                        }
+                    }
+                    while (true)
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        System.Console.WriteLine(words);
+                        System.Console.Write("Введите исполняемую задачу ---> ");
+                        taskB.task = System.Console.ReadLine();
+                        if (taskB.task.Length > 20)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Вы ввели слишком большую строку! Введите строку заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey();
+                            System.Console.Clear();
+                            continue;
+                        }
+                        if (taskB.task.Length < 5)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Вы ввели слишком маленькую строку! Введите строку заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); continue;
+                        }
+                        string pattern = @"^[а-яА-ЯёЁ\s\-']+$";
+                        bool isValid = System.Text.RegularExpressions.Regex.IsMatch(taskB.task, pattern);
+                        if (isValid)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                            System.Console.WriteLine("\n  Строка содержит только допустимые символы! Ввод прошел успешно!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); break;
+                        }
+                        else
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Строка содержит цифры или другие неверные символы! Введите строку заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); continue;
+                        }
+                    }
+                    while (true)
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        try
+                        {
+                            System.Console.WriteLine(words);
+                            System.Console.WriteLine($"Введите статус выполнения для задачи <{taskB.task}>!");
+                            System.Console.WriteLine("|---------------------------------|");
+                            System.Console.ForegroundColor = System.ConsoleColor.Magenta;
+                            System.Console.WriteLine("|Задача.Статус.Выполнено -----> + |");
+                            System.Console.WriteLine("|Задача.Статус.Незавершено ---> - |");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("|---------------------------------|");
+                            System.Console.Write("\nСтатус задачи ---> ");
+                            taskB.symbol = char.Parse(System.Console.ReadLine());
+                            if (taskB.symbol == '+')
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                System.Console.WriteLine("\n  Вы установили пометку на задачи <выполнено>! Ввод прошел успешно!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                break;
+                            }
+                            else if (taskB.symbol == '-')
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                System.Console.WriteLine("\n  Вы установили пометку на задачи <не выполнено>! Ввод прошел успешно!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                break;
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine("\n  Введенный вами символ не соответствует требованиям программы! Введите символ заново!");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                        }
+                        catch (System.FormatException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("\n  Некорректный ввод! Введите символ заново!");
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                            System.Console.ReadKey(); System.Console.Clear(); continue;
+                        }
+                    }
+                    System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                    System.Console.WriteLine("\n  Задача была добавлена в список!\n");
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                    tasks.Add(taskB);
+                    System.Console.ReadKey(); System.Console.Clear(); continue;
+                }
+                else
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Red;
+                    System.Console.WriteLine("\n  Некорректный ввод! Введите заново!");
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                    System.Console.ReadKey(); System.Console.Clear(); continue;
+                }
+            }
+        }
+    }
+}

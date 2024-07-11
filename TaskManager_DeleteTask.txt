@@ -1,0 +1,109 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class TaskManager_DeleteTask
+    {
+        public static void DeleteTaskPlactic(System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks)
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            string words1 = "Нажмите для продолжения любую клавишу...\n";
+            if (tasks.Count > 0)
+            {
+                while (true)
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    if (tasks.Count == 0)
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Red;
+                        System.Console.WriteLine("\nВами был удален последний элемент!\nВы не сможете дальше продолжать выполнять операцию <Удаление> !");
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        System.Console.WriteLine("Нажмите для продолжения любую клавишу...");
+                        System.Console.ReadKey(); System.Console.Clear(); break;
+                    }
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("+---+--------------------------+\n| 2 |   Удалить запись         |\n+---+--------------------------+\n");
+                    System.Console.Write("Введите продолжить/завершить удаление элементов коллекции (да/нет): ");
+                    string opearation = System.Console.ReadLine();
+                    if (opearation == "да")
+                    {
+                        try
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.Write("\nВведите номер задачи для удаления (просмотр списка - 0): ");
+                            short _num = Convert.ToInt16(System.Console.ReadLine());
+                            if (_num == 0)
+                            {
+                                ConsoleApplicationPractic2024.TaskManager_PrintTask.PrintTaskPractic(tasks);
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                System.Console.WriteLine("Просмотр был завершен!\n" + words1);
+                                System.Console.ReadKey();System.Console.Clear(); continue;
+                            }
+                            ConsoleApplicationPractic2024.Task num = null;
+                            foreach (var item in tasks)
+                            {
+                                if (item.number == _num)
+                                {
+                                    num = item; break;
+                                }
+                            }
+                            if (num != null)
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("+------------------------------------------------------+");
+                                System.Console.WriteLine("|     <номер>) <задача> - состояние: (<пометка>)       |");
+                                System.Console.WriteLine("+------------------------------------------------------+");
+                                System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                System.Console.WriteLine($"      {num.number}) {num.task} - состояние: ({num.symbol})  ");
+                                System.Console.WriteLine("+------------------------------------------------------+\n");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.ForegroundColor = System.ConsoleColor.Magenta;
+                                System.Console.WriteLine("В списке задач ваш элемент был найден! Дубликатов быть не может!\n");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                tasks.Remove(num);
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                System.Console.WriteLine("Удаление прошло успешно!\n" + words1);
+                                System.Console.ReadKey(); System.Console.Clear();
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine("Вы ввели несуществующий ключ в списке задач! Попробуйте заново ввести его правильно!\n" + words1);
+                                System.Console.ReadKey();System.Console.Clear(); continue;
+                            }
+                        }
+                        catch (System.NullReferenceException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("Вы ввели несуществующий ключ в списке задач! Попробуйте заново ввести его правильно!\n" + words1);
+                            System.Console.ReadKey();System.Console.Clear();
+                        }
+                        catch (System.FormatException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("Неверный формат! Введите число заново!\n" + words1);
+                            System.Console.ReadKey();System.Console.Clear();
+                        }
+                        catch (System.OverflowException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("Вы вышли за диапазон типа данных byte! Введите число заново!\n" + words1);
+                            System.Console.ReadKey();System.Console.Clear();
+                        }
+                    }
+                    else if (opearation == "нет")
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                        System.Console.Write("Операция удалния элементов в коллекции успешно завершена!\n" + words1);
+                        System.Console.ReadKey();System.Console.Clear(); break;
+                    }
+                    else
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Red;
+                        System.Console.Write("Некорректные данные! Введите данные заново!\n" + words1);
+                        System.Console.ReadKey();System.Console.Clear();
+                    }
+                }
+            }
+            else {}
+        }
+    }
+}

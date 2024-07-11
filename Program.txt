@@ -1,0 +1,194 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class Program
+    {
+        private string login;
+        private string password;
+        private static string ReadBlindString()
+        {
+            string hiddenString = string.Empty;
+            System.ConsoleKeyInfo keyInfo;
+            do
+            {
+                keyInfo = System.Console.ReadKey(intercept: true);
+                if (keyInfo.Key != System.ConsoleKey.Backspace && keyInfo.Key != System.ConsoleKey.Enter)
+                {
+                    hiddenString += keyInfo.KeyChar;
+                    System.Console.Write("");
+                }
+                else if (keyInfo.Key == System.ConsoleKey.Backspace && hiddenString.Length > 0)
+                {
+                    hiddenString = hiddenString.Substring(0, hiddenString.Length - 1);
+                    System.Console.Write("\b \b");
+                }
+            }
+            while (keyInfo.Key != System.ConsoleKey.Enter);
+            return hiddenString;
+        }
+        private static int SimpleHashLogin(string login)
+        {
+            int hash1 = 0;
+            foreach (char c in login)
+            {
+                hash1 = 31 * hash1 + c;
+            }
+            return hash1;
+        }
+        private static int SimpleHashPassword(string password)
+        {
+            int hash2 = 0;
+            foreach (char c in password)
+            {
+                hash2 = 31 * hash2 + c;
+            }
+            return hash2;
+        }
+        public void setValuesProgram(string login, string password)
+        {
+            this.login = login;
+            this.password = password;
+        }
+        private static void PrintWord(char[][,] letters)
+        {
+            for (int row = 0; row < 6; row++)
+            {
+                foreach (var letter in letters)
+                {
+                    for (int col = 0; col < 5; col++)
+                    {
+                        System.Console.Write(letter[row, col]);
+                    }
+                    System.Console.Write(' ');
+                }
+                System.Console.WriteLine();
+            }
+        }
+        public static void Main()
+        {
+            System.ConsoleColor originalForegroundColor = System.Console.ForegroundColor;
+            System.ConsoleColor originalBackgroundColor = System.Console.BackgroundColor;
+            System.Console.ForegroundColor = System.ConsoleColor.Red;
+            char[,] G = { {'#','#','#','#','#'},{'#',' ',' ',' ',' '},{'#',' ',' ',' ',' '},
+                          {'#',' ','#','#','#'},{'#',' ',' ',' ','#'},{'#','#','#','#','#'} };
+            char[,] R = { {'#','#','#','#','#'},{'#',' ',' ',' ','#'},{'#','#','#','#','#'},
+                          {'#',' ','#',' ',' '},{'#',' ',' ','#',' '},{'#',' ',' ',' ','#'} };
+            char[,] A = { {' ',' ','#',' ',' '},{' ','#',' ','#',' '},{'#',' ',' ',' ','#'},
+                          {'#','#','#','#','#'},{'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'} };
+            char[,] V = { {'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'},
+                          {'#',' ',' ',' ','#'},{' ','#',' ','#',' '},{' ',' ','#',' ',' '} };
+            char[,] I = { {' ','#','#','#',' '},{' ',' ','#',' ',' '},{' ',' ','#',' ',' '},
+                          {' ',' ','#',' ',' '},{' ',' ','#',' ',' '},{' ','#','#','#',' '} };
+            char[,] U = { {'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'},
+                          {'#',' ',' ',' ','#'},{'#',' ',' ',' ','#'},{' ','#','#','#',' '} };
+            char[,] S = { {'#','#','#','#','#'},{'#',' ',' ',' ',' '},{' ','#','#',' ',' '},
+                          {' ',' ','#','#',' '},{' ',' ',' ',' ','#'},{'#','#','#','#','#'} };
+            char[][,] word = { G, R, A, V, I, U, S };
+            Program.PrintWord(word);
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            ConsoleApplicationPractic2024.Program obj = new ConsoleApplicationPractic2024.Program();
+            System.Console.Write("\n Write login: ");
+            obj.login = ReadBlindString();
+            System.Console.WriteLine();
+            System.Console.Write("\n Write password: ");
+            obj.password = ReadBlindString();
+            System.Console.WriteLine();
+            int kod1 = SimpleHashLogin(obj.login);
+            int kod2 = SimpleHashPassword(obj.password);
+            if (-331864634 != kod1 || 654474982 != kod2)
+            {
+                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                System.Console.WriteLine();
+                System.Console.WriteLine(" +-----------------+");
+                System.Console.WriteLine(" |Access is denied!|");
+                System.Console.WriteLine(" +-----------------+");
+                Thread.Sleep(1000);
+                return;
+            }
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            System.Console.WriteLine();
+            System.Console.WriteLine(" +------------------+");
+            System.Console.WriteLine(" |Access is allowed!|");
+            System.Console.WriteLine(" +------------------+");
+            Thread.Sleep(1500);
+            System.Console.Clear();
+            string w1 = "+---+--------------------------+\n| 1 |   Добавить запись        |\n+---+--------------------------+";
+            string w2 = "| 2 |   Удалить запись         |\n+---+--------------------------+\n| 3 |   Распечатать список     |";
+            string w3 = "+---+--------------------------+\n| 4 |   Сохранить список       |\n+---+--------------------------+";
+            string w4 = "| 5 |   Загрузить список       |\n+---+--------------------------+\n| 6 |   Поменять пометку       |";
+            string w5 = "+---+--------------------------+\n| 7 |   Завершение программы   |\n+---+--------------------------+";
+            System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks = new System.Collections.Generic.List<ConsoleApplicationPractic2024.Task>();
+            while (true)
+            {
+                try
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.Clear();
+                    System.Console.WriteLine(w1 + "\n" + w2 + "\n" + w3 + "\n" + w4 + "\n" + w5 + "\n");
+                    System.Console.Write("Введите номер операции ---> ");
+                    byte choice = byte.Parse(System.Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            System.Console.Clear();
+                            ConsoleApplicationPractic2024.TaskManager_AddTask.AddTaskPractic(tasks); 
+                            continue;
+                        case 2:
+                            if (tasks.Count != 0)
+                            {
+                                System.Console.Clear();
+                                ConsoleApplicationPractic2024.TaskManager_DeleteTask.DeleteTaskPlactic(tasks);
+                                continue;
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.Write("\nВаша коллекция ничего не содержит!\nВы не можете выполнить операцию <Удаление> !\nНажмите для продолжения любую клавишу... ");
+                                System.Console.ReadKey(); System.Console.Clear();
+                                continue;
+                            }
+                        case 3:
+                            System.Console.Clear();
+                            ConsoleApplicationPractic2024.TaskManager_PrintTask.PrintTaskPractic(tasks); 
+                            continue;
+                        case 4:
+                            System.Console.Clear();
+                            ConsoleApplicationPractic2024.TaskManager_SaveTask.SaveTaskPractic(tasks); 
+                            continue;
+                        case 5:
+                            if (tasks.Count == 0)
+                            {
+                                System.Console.Clear();
+                                System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> task = ConsoleApplicationPractic2024.TaskManager_LoadTask.LoadTaskPractic();
+                                if (task != null)
+                                {
+                                    tasks = task;
+                                    continue;
+                                }
+                                continue;
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.Write("\nВаша коллекция что-то содержит!\nВы не можете вызвать операцию <Загрузка> !\nНажмите для продолжения любую клавишу... ");
+                                System.Console.ReadKey(); System.Console.Clear();
+                                continue;
+                            }
+                        case 6:
+                            System.Console.Clear();
+                            ConsoleApplicationPractic2024.TaskManager_SetWork.SymbolTaskPractic(tasks); 
+                            continue;
+                        case 7:
+                            System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                            System.Console.WriteLine("\nОсуществлен выход из программы!");
+                            break;
+                        default:
+                            continue;
+                    }
+                    break;
+                }
+                catch (System.FormatException) {}
+                catch (System.OverflowException) {}
+            }
+        }
+    }
+}

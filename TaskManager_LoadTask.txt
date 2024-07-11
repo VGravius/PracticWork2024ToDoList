@@ -1,0 +1,163 @@
+using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+namespace ConsoleApplicationPractic2024
+{
+
+    public class TaskManager_LoadTask
+    {
+        private static bool ContainsDuplicatesByIdWithLinq(IEnumerable<Task> collection)
+        {
+            return collection.GroupBy(x => x.number).Any(g => g.Count() > 1);
+        }
+        public static System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> LoadTaskPractic()
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            string koleb = "+------------------------------------------+";
+            while (true)
+            {
+                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                System.Console.WriteLine();
+                System.Console.Write("(Help - <information>) --$ sudo ");
+                string operation = System.Console.ReadLine();
+                if (operation == "exit")
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                    System.Console.WriteLine();
+                    System.Console.WriteLine("EXIT...");
+                    System.Console.ReadKey();
+                    System.Console.Clear();
+                    return null;
+                }
+                switch (operation)
+                {
+                    case "information":
+                        System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                        System.Console.WriteLine();
+                        System.Console.WriteLine("Команды для работы с терминалом LoadTaskPractic: ");
+                        System.Console.WriteLine();
+                        System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                        System.Console.WriteLine("print files - команда для вывода всех фалов с форматом .txt в терминал, хранящихся в каталоге проекта");
+                        System.Console.WriteLine("read file - команда для ввода имени файла для загрузки из него списка задач, т.е. коллекции");
+                        System.Console.WriteLine("check file - команда для вывода содержимой информации из файле в терминал");
+                        System.Console.WriteLine("clear - команда для очистки терминала");
+                        System.Console.WriteLine("exit - команда для выхода из меню <LoadTaskPractic>");
+                        System.Console.WriteLine();
+                        continue;
+                    case "print files":
+                        System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                        System.Console.WriteLine();
+                        string projectDirectory = Directory.GetCurrentDirectory();
+                        string[] txtFiles = Directory.GetFiles(projectDirectory, "*.txt");
+                        foreach (var file in txtFiles)
+                        {
+                            Console.WriteLine(Path.GetFileName(file));
+                        }
+                        continue;
+                    case "read file":
+                        System.Console.WriteLine();
+                        try
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.Write("sudo read file name = ");
+                            string filePath = System.Console.ReadLine();
+                            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                            string json = File.ReadAllText(filePath);
+                            System.Console.WriteLine();
+                            if (!File.Exists(filePath))
+                            {
+                                Console.WriteLine($"File {filePath} does not exist.");
+                                break;
+                            }
+                                System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<ConsoleApplicationPractic2024.Task>>(json);
+                                System.Console.WriteLine(koleb);
+                            foreach (var item in tasks)
+                            {
+
+                                System.Console.WriteLine($"({item.number}) {item.task} - completed? : ({item.symbol})");
+                            }
+                            System.Console.WriteLine(koleb);
+                            bool hasDuplicates = ContainsDuplicatesByIdWithLinq(tasks);
+                            Console.WriteLine(hasDuplicates ? "Коллекция содержит дубликаты!" : "Коллекция не содержит дубликатов!");
+                            if (hasDuplicates)
+                            {
+                                System.Console.WriteLine("Коллекция не может быть загружена по причине ДУБЛИРОВАНИЯ ключевых полей <номер> в списке!");
+                                System.Console.WriteLine("Исправьте ошибку или загрузите коллекцию из другого файла с корректными данными!");
+                                System.Console.WriteLine("Нажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); return null;
+                            }
+                            Thread.Sleep(1000);
+                            System.Console.WriteLine("Данные поля <номер> корректны!");
+                            string pattern = @"^[а-яА-ЯёЁ\s\-']+$";
+                            foreach (var item in tasks)
+                            {
+                                bool isValid = System.Text.RegularExpressions.Regex.IsMatch(item.task, pattern);
+                                if (!isValid)
+                                {
+                                    System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                    System.Console.WriteLine("Коллекция не может быть загружена по причине некорретных строк полей <задача> в списке!");
+                                    System.Console.WriteLine("Исправьте ошибку или загрузите коллекцию из другого файла с корректными данными!");
+                                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                    System.Console.WriteLine("\n  Нажмите для продолжения любую клавишу...");
+                                    System.Console.ReadKey(); System.Console.Clear();return null;
+                                }
+                            }
+                            Thread.Sleep(1000);
+                            System.Console.WriteLine("Данные поля <задача> корректны!");
+                            Thread.Sleep(1000);
+                            System.Console.WriteLine("Данные поля <пометка> корректны!");
+                            System.Console.WriteLine("Можете продолжать работу!");
+                            System.Console.WriteLine();
+                            System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                            System.Console.WriteLine("EXIT...");
+                            System.Console.ReadKey(); System.Console.Clear();
+                            return tasks;
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            continue;
+                        }
+                        catch (ArgumentException)
+                        {
+                            continue;
+                        }
+                    case "check file":
+                        try
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.WriteLine();
+                            System.Console.Write("(Help - <information>) --$ sudo check file name = ");
+                            string filePath2 = System.Console.ReadLine();
+                            System.Console.WriteLine();
+                            using (StreamReader reader = new StreamReader(filePath2))
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                string line;
+                                while ((line = reader.ReadLine()) != null)
+                                {
+                                    Console.WriteLine(line);
+                                }
+                            }
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            continue;
+                        }
+                        catch (ArgumentException)
+                        {
+                            continue;
+                        }
+                        continue;
+                    case "clear":
+                        System.Console.Clear();
+                        continue;
+                    default:
+                        System.Console.ForegroundColor = System.ConsoleColor.Red;
+                        System.Console.WriteLine("Invalid command in terminal interface <LoadTaskPractic>!");
+                        continue;
+                }
+            }
+        }
+    }
+}

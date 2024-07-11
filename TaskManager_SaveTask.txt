@@ -1,0 +1,53 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class TaskManager_SaveTask
+    {
+        public static void SaveTaskPractic(System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks)
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            string words = "+---+--------------------------+\n| 4 |   Сохранить список       |\n+---+--------------------------+\n";
+            string text = "\n      Структура записей в списке задач     \n+------------------------------------------+\n" + "|<номер>) <задача> - состояние: (<пометка>)|\n+------------------------------------------+\n";
+            string koleb = "+------------------------------------------+";
+            try
+            {
+                while (true)
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine(words + "\n" + text + "\n");
+                    System.Console.WriteLine("Коллекция:");
+                    System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                    System.Console.WriteLine(koleb);
+                    foreach (var item in tasks)
+                    {
+                        System.Console.WriteLine($"Номер: <{item.number}>, Задача: <{item.task}>, Пометка: (<{item.symbol}>)");
+                    }
+                    System.Console.WriteLine(koleb + "\n");
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("Хотите вывести записи соответствующие требованиям или вывести их все?");
+                    System.Console.Write("Введите (да) если хотите сохранить в файл коллекцию или (нет) если хотите завершить операцию сохранения: ");
+                    string input = System.Console.ReadLine();
+                    if (input == "нет")
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                        System.Console.WriteLine("Операция сохранения была завершена досрочно!...\n");
+                        System.Console.ReadKey(); System.Console.Clear(); break;
+                    }
+                    else if (input == "да")
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        System.Console.Write("\nВведите название файла <Name.txt> для сохранения списка задач (коллекции): ");
+                        string filePath = System.Console.ReadLine();
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(tasks, Newtonsoft.Json.Formatting.Indented);
+                        File.WriteAllText(filePath, json);
+                        System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                        System.Console.WriteLine($"Коллекция сохранена в {filePath}");
+                        System.Console.WriteLine("Операция сохранения была завершена успешно!...\n");
+                        System.Console.ReadKey(); System.Console.Clear(); continue;
+                    }
+                    else { continue; }
+                }
+            }
+            catch (System.Exception) {}
+        }
+    }
+}

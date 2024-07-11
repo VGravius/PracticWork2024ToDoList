@@ -1,0 +1,21 @@
+namespace ConsoleApplicationPractic2024
+{
+	public class Task
+	{
+        private static byte count;
+        public byte number;
+        public string task;
+        public char symbol;
+        public void setValues(byte number, string task, char symbol)
+        {
+            this.number = number;
+            this.task = task;
+            this.symbol = symbol;
+        }
+        public override string ToString()
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+            return $"{number}) {task} - состояние: ({symbol});";
+        }
+    }
+}

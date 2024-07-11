@@ -1,0 +1,111 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class TaskManager_SetWork
+    {
+        public static void SymbolTaskPractic(System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks)
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            string words2 = "Нажмите для продолжения любую клавишу...\n";
+            if (tasks.Count > 0)
+            {
+                while (true)
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("+---+--------------------------+\n| 6 |   Поменять пометку       |\n+---+--------------------------+\n");
+                    System.Console.Write("Введите продолжить/завершить замену пометок в коллекции (да/нет): ");
+                    string opearation = System.Console.ReadLine();
+                    if (opearation == "да")
+                    {
+                        try
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                            System.Console.Write("\nВведите номер задачи для изменения (просмотр списка - 0): ");
+                            byte _num = byte.Parse(System.Console.ReadLine());
+                            if (_num == 0)
+                            {
+                                System.Console.Clear();
+                                System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                ConsoleApplicationPractic2024.TaskManager_PrintTask.PrintTaskPractic(tasks);
+                                System.Console.WriteLine("Просмотр был завершен!\n" + words2);
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                            ConsoleApplicationPractic2024.Task num = null;
+                            foreach (var item in tasks)
+                            {
+                                if (item.number == _num)
+                                {
+                                    num = item; break;
+                                }
+                            }
+                            if (num != null)
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("\n+----------------------БЫЛО----------------------------+");
+                                System.Console.WriteLine("|     <номер>) <задача> - состояние: (<пометка>)       |");
+                                System.Console.WriteLine("+------------------------------------------------------+");
+                                System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                System.Console.WriteLine($"      {num.number}) {num.task} - состояние: ({num.symbol})  ");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("+------------------------------------------------------+\n");
+                                System.Console.WriteLine("В списке задач ваш элемент был найден! Дубликатов быть не может!\n");
+                                if (num.symbol == '+')
+                                {
+                                    num.symbol = '-';
+                                }
+                                else
+                                {
+                                    num.symbol = '+';
+                                }
+                                System.Console.WriteLine("\n+----------------------СТАЛО---------------------------+");
+                                System.Console.WriteLine("|     <номер>) <задача> - состояние: (<пометка>)       |");
+                                System.Console.WriteLine("+------------------------------------------------------+");
+                                System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                System.Console.WriteLine($"      {num.number}) {num.task} - состояние: ({num.symbol})  ");
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine("+------------------------------------------------------+\n");
+                                System.Console.WriteLine("Изменение прошло успешно!\n" + words2);
+                                System.Console.ReadKey(); System.Console.Clear();
+                            }
+                            else
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine("Вы ввели несуществующий ключ в списке задач! Попробуйте заново ввести его правильно!\n" + words2);
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                        }
+                        catch (System.FormatException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("Неверный формат! Введите число заново!\n" + words2);
+                            System.Console.ReadKey(); System.Console.Clear();
+                        }
+                        catch (System.OverflowException)
+                        {
+                            System.Console.ForegroundColor = System.ConsoleColor.Red;
+                            System.Console.WriteLine("Вы вышли за диапазон типа данных byte! Введите число заново!\n" + words2);
+                            System.Console.ReadKey(); System.Console.Clear();
+                        }
+                    }
+                    else if (opearation == "нет")
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                        System.Console.Write("Операция изменения пометок элементов в коллекции успешно завершена!\n" + words2);
+                        System.Console.ReadKey(); System.Console.Clear(); break;
+                    }
+                    else
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Red;
+                        System.Console.WriteLine("Некорректные данные! Введите данные заново!\n" + words2);
+                        System.Console.ReadKey(); System.Console.Clear(); continue;
+                    }
+                }
+            }
+            else
+            {
+                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                System.Console.WriteLine("Ваш список задач пуст! Вы не сможете что-то изменить!\n" + words2);
+                System.Console.ReadKey(); System.Console.Clear();
+            }
+        }
+    }
+}

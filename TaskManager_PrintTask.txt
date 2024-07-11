@@ -1,0 +1,129 @@
+namespace ConsoleApplicationPractic2024
+{
+    public class TaskManager_PrintTask
+    {
+        public static void PrintTaskPractic(System.Collections.Generic.List<ConsoleApplicationPractic2024.Task> tasks)
+        {
+            System.Console.ForegroundColor = System.ConsoleColor.Blue;
+            string words = "+---+--------------------------+\n| 3 |   Распечатать список     |\n+---+--------------------------+\n";
+            string text = "\n      Структура записей в списке задач     \n+------------------------------------------+\n" +
+                "|<номер>) <задача> - состояние: (<пометка>)|\n+------------------------------------------+\n";
+            string koleb = "+------------------------------------------+";
+            while (true)
+            {
+                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                System.Console.WriteLine(words + "\n" + text + "\n");
+                if (tasks.Count == 0)
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Red;
+                    System.Console.WriteLine("Ваш список задач пуст! Нажмите для продолжения любую клавишу...\n");
+                    System.Console.ReadKey();System.Console.Clear(); break;
+                }
+                else
+                {
+                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                    System.Console.WriteLine("Хотите вывести записи соответствующие требованиям или вывести их все?");
+                    System.Console.Write("Введите (да) если по требованиям или (нет) если всё хотите распечатать: ");
+                    string input = System.Console.ReadLine();
+                    if (input == "нет")
+                    {
+                        System.Console.Clear();
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        System.Console.WriteLine(words + "\n" + text + "\n");
+                        var sortedByNumber = tasks.OrderBy(p => p.number).ToList();
+                        System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                        System.Console.WriteLine(koleb);
+                        foreach (var kvp in sortedByNumber)
+                        {
+                            System.Console.WriteLine(kvp);
+                        }
+                        System.Console.WriteLine(koleb);
+                        System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                        System.Console.WriteLine("\nСписок распечатан!\nНажмите для продолжения любую клавишу...");
+                        System.Console.ReadKey(); System.Console.Clear(); break;
+                    }
+                    else if (input == "да")
+                    {
+                        System.Console.Clear();
+                        while (true)
+                        {
+                            try
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                System.Console.WriteLine(words + "\n" + text + "\n");
+                                System.Console.Write("Введите (+) чтобы вывести все выполненные задачи!\nВведите (-) чтобы вывести незаверешнные задачи!\n");
+                                System.Console.WriteLine("Введите (0) чтобы выйти из просмотра!");
+                                System.Console.Write("Ввод символа ---> ");
+                                char sym = char.Parse(System.Console.ReadLine());
+                                System.Console.WriteLine();
+                                if (sym == '+')
+                                {
+                                    System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                    System.Console.WriteLine(koleb);
+                                    var sortedByNumber = tasks.OrderBy(p => p.number).ToList();
+                                    foreach (var kvp in sortedByNumber)
+                                    {
+                                        if (kvp.symbol == '+')
+                                        {
+                                            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                            System.Console.WriteLine(kvp);
+                                        }
+                                        continue;
+                                    }
+                                    System.Console.WriteLine(koleb);
+                                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                    System.Console.WriteLine("\nСписок распечатан!\nНажмите для продолжения любую клавишу...\n");
+                                    System.Console.ReadKey(); System.Console.Clear(); 
+                                }
+                                else if (sym == '-')
+                                {
+                                    var sortedByNumber = tasks.OrderBy(p => p.number).ToList();
+                                    System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                    System.Console.WriteLine(koleb);
+                                    foreach (var kvp in sortedByNumber)
+                                    {
+                                        if (kvp.symbol == '-')
+                                        {
+                                            System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+                                            System.Console.WriteLine(kvp);
+                                        }
+                                        continue;
+                                    }
+                                    System.Console.WriteLine(koleb);
+                                    System.Console.ForegroundColor = System.ConsoleColor.Blue;
+                                    System.Console.WriteLine("\nСписок распечатан!\nНажмите для продолжения любую клавишу...\n");
+                                    System.Console.ReadKey(); System.Console.Clear();
+                                }
+                                else if (sym == '0')
+                                {
+                                    System.Console.ForegroundColor = System.ConsoleColor.Cyan;
+                                    System.Console.WriteLine("Осуществлен выход из просмотра списка задач!\nНажмите для продолжения любую клавишу...");
+                                    System.Console.ReadKey(); System.Console.Clear(); break;
+                                }
+                                else
+                                {
+                                    System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                    System.Console.WriteLine("Некорректный ввод! Введите символ заново!\nНажмите для продолжения любую клавишу...");
+                                    System.Console.ReadKey(); System.Console.Clear(); continue;
+                                }
+                            }
+                            catch (System.FormatException)
+                            {
+                                System.Console.ForegroundColor = System.ConsoleColor.Red;
+                                System.Console.WriteLine("Некорректный ввод! Введите символ заново!\nНажмите для продолжения любую клавишу...");
+                                System.Console.ReadKey(); System.Console.Clear(); continue;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        System.Console.ForegroundColor = System.ConsoleColor.Red;
+                        System.Console.WriteLine("Некорректный ввод! Введите заново!\nНажмите для продолжения любую клавишу...");
+                        System.Console.ReadKey();System.Console.Clear(); continue;
+                    }
+                    System.Console.Clear(); break;
+                }
+            }
+        }
+    }
+}
